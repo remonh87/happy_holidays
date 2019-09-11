@@ -10,7 +10,8 @@ part 'national_holiday.g.dart';
 class NationalHoliday extends $NationalHoliday {
   const NationalHoliday({@required this.name, @required this.date});
 
-  factory NationalHoliday.fromJson(Map<String, dynamic> json) => _$NationalHolidayFromJson(json);
+  factory NationalHoliday.fromJson(Map<String, dynamic> json) =>
+      _$NationalHolidayFromJson(json);
 
   final String name;
   final String date;
