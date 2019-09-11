@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'national_holiday.g.dart';
 
+//ignore_for_file: annotate_overrides
 @JsonSerializable()
 @FunctionalData()
 class NationalHoliday extends $NationalHoliday {
