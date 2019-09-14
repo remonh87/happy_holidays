@@ -11,9 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
+  flutter_redux:
   functional_data:
   http:
   json_annotation:
+  redux:
 
 dev_dependencies:
   flutter_test:
