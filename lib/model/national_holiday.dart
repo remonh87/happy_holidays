@@ -8,10 +8,14 @@ part 'national_holiday.g.dart';
 @JsonSerializable()
 @FunctionalData()
 class NationalHoliday extends $NationalHoliday {
-  const NationalHoliday({@required this.name, @required this.date});
+  const NationalHoliday({@required this.name, @required this.date})
+      : assert(name != null),
+        assert(date != null);
 
-  factory NationalHoliday.fromJson(Map<String, dynamic> json) =>
-      _$NationalHolidayFromJson(json);
+  factory NationalHoliday.fromJson(Map<String, dynamic> json) => _$NationalHolidayFromJson(json);
+
+  @visibleForTesting
+  factory NationalHoliday.testinstance() => const NationalHoliday(name: 'test', date: '2019-01-01');
 
   final String name;
   final String date;
