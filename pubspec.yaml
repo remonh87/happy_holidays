@@ -16,6 +16,8 @@ dependencies:
   http:
   json_annotation:
   redux:
+  sqflite:
+  path:
 
 dev_dependencies:
   flutter_test:
