@@ -16,7 +16,7 @@ class HolidayDatabase {
 }
 
 class HolidayDatabaseFactory {
-  Future<Database> _createDatabase() async =>
+  Future<Database> createDatabase() async =>
       await openDatabase(join(await getDatabasesPath(), 'holiday_database.db'), onCreate: (db, version) {
         db.execute('CREATE TABLE holidays (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT)');
       });
