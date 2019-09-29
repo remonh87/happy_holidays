@@ -15,3 +15,11 @@ class AddHolidaysAction extends $AddHolidaysAction {
   @CustomEquality(DeepCollectionEquality())
   final Iterable<NationalHoliday> holidays;
 }
+
+@FunctionalData()
+class DbInsertHolidaysAction extends $AddHolidaysAction {
+  const DbInsertHolidaysAction({@required this.holidays});
+
+  @CustomEquality(DeepCollectionEquality())
+  final Iterable<NationalHoliday> holidays;
+}

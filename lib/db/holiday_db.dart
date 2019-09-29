@@ -16,8 +16,11 @@ class HolidayDatabase {
 
   Future<Iterable<NationalHoliday>> retrieveHolidays() async {
     final result = await _database.query('holidays');
-
-    return result.map((r) => NationalHoliday.fromJson(r));
+    if (result.isNotEmpty && result.first.isNotEmpty) {
+      return result.map((r) => NationalHoliday.fromJson(r));
+    } else {
+      return <NationalHoliday>[];
+    }
   }
 }
 

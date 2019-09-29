@@ -31,12 +31,20 @@ void main() {
           .called(1);
     });
 
-    test('It queries for holidays', () async {
-      when(db.query('holidays')).thenAnswer((_) => Future.value([
-            <String, String>{'name': 'holiday from db', 'date': '2020-01-01'}
-          ]));
+    group('Query database', () {
+      test('It converts contents to holidays in case db has value', () async {
+        when(db.query('holidays')).thenAnswer((_) => Future.value([
+              <String, String>{'name': 'holiday from db', 'date': '2020-01-01'}
+            ]));
 
-      expect(await sut.retrieveHolidays(), [const NationalHoliday(name: 'holiday from db', date: '2020-01-01')]);
+        expect(await sut.retrieveHolidays(), [const NationalHoliday(name: 'holiday from db', date: '2020-01-01')]);
+      });
+
+      test('It returns empty iterable in case db is empty', () async {
+        when(db.query('holidays')).thenAnswer((_) => Future.value([<String, String>{}]));
+
+        expect(await sut.retrieveHolidays(), <NationalHoliday>[]);
+      });
     });
   });
 }

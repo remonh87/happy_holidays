@@ -4,9 +4,8 @@ import 'package:happy_holidays/redux/actions.dart';
 import 'package:happy_holidays/redux/app_state.dart';
 import 'package:redux/redux.dart';
 
-class AppMiddleware implements MiddlewareClass<AppState> {
-  const AppMiddleware({@required HolidayApiClient apiClient})
-      : _apiClient = apiClient;
+class ApiMiddleware implements MiddlewareClass<AppState> {
+  const ApiMiddleware({@required HolidayApiClient apiClient}) : _apiClient = apiClient;
 
   final HolidayApiClient _apiClient;
 
@@ -20,6 +19,8 @@ class AppMiddleware implements MiddlewareClass<AppState> {
 
   Future<void> _retrieveHolidays(void Function(dynamic action) dispatch) async {
     final result = await _apiClient.nextPublicHolidaysWorldwide();
-    dispatch(AddHolidaysAction(holidays: result));
+    if (result.isNotEmpty) {
+      dispatch(DbInsertHolidaysAction(holidays: result));
+    }
   }
 }
