@@ -11,7 +11,7 @@ class ApiMiddleware implements MiddlewareClass<AppState> {
 
   @override
   void call(Store<AppState> store, dynamic action, NextDispatcher next) {
-    if (action is StartAppAction) {
+    if (action is ApiFetchHolidaysAction) {
       _retrieveHolidays(store.dispatch);
     }
     next(action);
@@ -20,7 +20,7 @@ class ApiMiddleware implements MiddlewareClass<AppState> {
   Future<void> _retrieveHolidays(void Function(dynamic action) dispatch) async {
     final result = await _apiClient.nextPublicHolidaysWorldwide();
     if (result.isNotEmpty) {
-      dispatch(DbInsertHolidaysAction(holidays: result));
+      dispatch(ApiFetchHolidaysSuccessAction(holidays: result));
     }
   }
 }

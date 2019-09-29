@@ -6,6 +6,7 @@ import 'package:happy_holidays/db/db_middleware.dart';
 import 'package:happy_holidays/db/holiday_db.dart';
 import 'package:happy_holidays/main.dart';
 import 'package:happy_holidays/redux/actions.dart';
+import 'package:happy_holidays/redux/app_middleware.dart';
 import 'package:happy_holidays/redux/app_state.dart';
 import 'package:happy_holidays/redux/holiday_reducer.dart';
 import 'package:happy_holidays/api/api_middleware.dart';
@@ -37,7 +38,7 @@ void main() {
 
       testWidgets('Stores holiday in the db', (WidgetTester tester) async {
         await tester.pumpWidget(sut);
-        await tester.pumpAndSettle(Duration(seconds: 2));
+        await tester.pumpAndSettle(Duration(seconds: 4));
 
         verify(
           db.insert('holidays', <String, String>{'name': 'test', 'date': '2019-09-29T11:10:01.011Z'},
@@ -62,7 +63,7 @@ void main() {
 
       testWidgets('Fetches holiday from db an display it on the screen', (WidgetTester tester) async {
         await tester.pumpWidget(sut);
-        await tester.pumpAndSettle(Duration(seconds: 2));
+        await tester.pumpAndSettle(Duration(seconds: 4));
 
         final holidayFinder = find.text('holiday from db');
         expect(holidayFinder, findsOneWidget);
@@ -78,6 +79,7 @@ Widget createSut(HolidayApi api, Database database) {
     middleware: [
       ApiMiddleware(apiClient: HolidayApiClient(holidayApi: api)),
       dbMiddleware(HolidayDatabase(database)),
+      appMiddleWare(),
     ],
   );
   store.dispatch(StartAppAction());

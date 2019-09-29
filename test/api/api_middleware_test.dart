@@ -33,15 +33,15 @@ void main() {
         apiClient = _MockApiClient();
         sut = ApiMiddleware(apiClient: apiClient);
         when(apiClient.nextPublicHolidaysWorldwide()).thenAnswer((_) => Future.value(holidays));
-        sut.call(store, StartAppAction(), dispatcher);
+        sut.call(store, ApiFetchHolidaysAction(), dispatcher);
       });
 
       test('It fetches holidays from api', () {
         verify(apiClient.nextPublicHolidaysWorldwide()).called(1);
       });
 
-      test('It dispatches $DbInsertHolidaysAction', () {
-        verify(store.dispatch(DbInsertHolidaysAction(holidays: holidays))).called(1);
+      test('It dispatches $ApiFetchHolidaysSuccessAction', () {
+        verify(store.dispatch(ApiFetchHolidaysSuccessAction(holidays: holidays))).called(1);
       });
     });
   });
