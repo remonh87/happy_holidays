@@ -13,6 +13,12 @@ class HolidayDatabase {
       _database.insert('holidays', holiday.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
     }
   }
+
+  Future<Iterable<NationalHoliday>> retrieveHolidays() async {
+    final result = await _database.query('holidays');
+
+    return result.map((r) => NationalHoliday.fromJson(r));
+  }
 }
 
 class HolidayDatabaseFactory {
