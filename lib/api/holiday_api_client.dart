@@ -14,7 +14,11 @@ class HolidayApiClient {
   Future<Iterable<NationalHoliday>> nextPublicHolidaysWorldwide() async {
     return _holidayApi.nextPublicHolidaysWorldwide().then((r) {
       if (r.statusCode == 200) {
-        return (jsonDecode(r.body) as Iterable<dynamic>).map((dynamic j) => NationalHoliday.fromJson(j));
+        if (r.body != '[{}]') {
+          return (jsonDecode(r.body) as Iterable<dynamic>).map((dynamic j) => NationalHoliday.fromJson(j));
+        } else {
+          return <NationalHoliday>[];
+        }
       } else {
         return Future.error('Request failed: statuscode = ${r.statusCode} body = ${r.body}');
       }

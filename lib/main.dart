@@ -6,7 +6,7 @@ import 'package:happy_holidays/db/holiday_db.dart';
 import 'package:happy_holidays/redux/actions.dart';
 import 'package:happy_holidays/redux/app_state.dart';
 import 'package:happy_holidays/redux/holiday_reducer.dart';
-import 'package:happy_holidays/redux/middleware.dart';
+import 'package:happy_holidays/api/api_middleware.dart';
 import 'package:happy_holidays/ui/home_page.dart';
 import 'package:redux/redux.dart';
 
@@ -18,7 +18,7 @@ Future<void> main() async {
   final store = Store<AppState>(
     holidayReducer,
     initialState: const AppState(nationalHolidays: []),
-    middleware: [AppMiddleware(apiClient: apiclient), dbMiddleware(HolidayDatabase(database))],
+    middleware: [ApiMiddleware(apiClient: apiclient), dbMiddleware(HolidayDatabase(database))],
   );
 
   store.dispatch(StartAppAction());

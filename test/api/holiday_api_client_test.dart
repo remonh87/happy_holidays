@@ -18,19 +18,20 @@ void main() {
     });
 
     group('GIVEN api returns succesful response', () {
-      final successfulResponse = http.Response(
-          '[{"date": "2019-09-10", "localName": "test holiday local", "name": "test holiday"}]',
-          200);
+      test('It converts json body into list of national holidays', () async {
+        final successfulResponse =
+            http.Response('[{"date": "2019-09-10", "localName": "test holiday local", "name": "test holiday"}]', 200);
+        when(mockApi.nextPublicHolidaysWorldwide()).thenAnswer((_) => Future<http.Response>.value(successfulResponse));
 
-      setUp(() {
-        when(mockApi.nextPublicHolidaysWorldwide())
-            .thenAnswer((_) => Future<http.Response>.value(successfulResponse));
+        expect(await sut.nextPublicHolidaysWorldwide(),
+            <NationalHoliday>[const NationalHoliday(name: 'test holiday', date: '2019-09-10')]);
       });
 
-      test('It converts json body into list of national holidays', () async {
-        expect(await sut.nextPublicHolidaysWorldwide(), <NationalHoliday>[
-          const NationalHoliday(name: 'test holiday', date: '2019-09-10')
-        ]);
+      test('It creates empty list in case json body is empty', () async {
+        final successfulResponse = http.Response('[{}]', 200);
+        when(mockApi.nextPublicHolidaysWorldwide()).thenAnswer((_) => Future<http.Response>.value(successfulResponse));
+
+        expect(await sut.nextPublicHolidaysWorldwide(), <NationalHoliday>[]);
       });
     });
 
@@ -38,15 +39,12 @@ void main() {
       final successfulResponse = http.Response('error message', 400);
 
       setUp(() {
-        when(mockApi.nextPublicHolidaysWorldwide())
-            .thenAnswer((_) => Future<http.Response>.value(successfulResponse));
+        when(mockApi.nextPublicHolidaysWorldwide()).thenAnswer((_) => Future<http.Response>.value(successfulResponse));
       });
 
       test('It throws error', () {
-        expect(
-            sut.nextPublicHolidaysWorldwide(),
-            throwsA(equals(
-                'Request failed: statuscode = 400 body = error message')));
+        expect(sut.nextPublicHolidaysWorldwide(),
+            throwsA(equals('Request failed: statuscode = 400 body = error message')));
       });
     });
   });

@@ -7,20 +7,45 @@ import 'package:mockito/mockito.dart';
 
 class _MockDatabase extends Mock implements HolidayDatabase {}
 
+abstract class Dispatcher {
+  void dispatch(dynamic action);
+}
+
+class _MockDispatcher extends Mock implements Dispatcher {}
+
 void main() {
   group('$dbMiddleware', () {
     Future<void> Function(dynamic action) sut;
     HolidayDatabase db;
+    _MockDispatcher dispatcher;
 
     setUp(() {
       db = _MockDatabase();
-      sut = (dynamic action) => executeAction(action, db);
+      dispatcher = _MockDispatcher();
+      sut = (dynamic action) => executeAction(action, db, dispatcher.dispatch);
     });
 
-    test('It writes to database when $AddHolidaysAction is dispatched', () async {
-      final action = AddHolidaysAction(holidays: [NationalHoliday.testinstance()]);
+    test('It writes to database when $DbInsertHolidaysAction is dispatched', () async {
+      final action = DbInsertHolidaysAction(holidays: [NationalHoliday.testinstance()]);
       await sut(action);
       verify(db.addHolidays(action.holidays)).called(1);
+    });
+
+    group('Given $StartAppAction is dispatched', () {
+      const holiday = NationalHoliday(name: 'test', date: '2020-01-01');
+      setUp(() async {
+        when(db.retrieveHolidays()).thenAnswer((_) => Future.value([holiday]));
+        final action = StartAppAction();
+        await sut(action);
+      });
+
+      test('It fetches holidays from database', () async {
+        verify(db.retrieveHolidays()).called(1);
+      });
+
+      test('It dispatches $AddHolidaysAction when db contains results', () {
+        verify(dispatcher.dispatch(const AddHolidaysAction(holidays: [holiday]))).called(1);
+      });
     });
   });
 }

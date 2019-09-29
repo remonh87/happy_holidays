@@ -4,12 +4,15 @@ import 'package:happy_holidays/redux/app_state.dart';
 import 'package:redux/redux.dart';
 
 Middleware<AppState> dbMiddleware(HolidayDatabase db) => (Store<AppState> store, dynamic action, NextDispatcher next) {
-      executeAction(action, db);
+      executeAction(action, db, store.dispatch);
       next(action);
     };
 
-Future<void> executeAction(dynamic action, HolidayDatabase db) async {
-  if (action is AddHolidaysAction) {
+Future<void> executeAction(dynamic action, HolidayDatabase db, void Function(dynamic action) dispatch) async {
+  if (action is DbInsertHolidaysAction) {
     await db.addHolidays(action.holidays);
+  } else if (action is StartAppAction) {
+    final result = await db.retrieveHolidays();
+    dispatch(AddHolidaysAction(holidays: result));
   }
 }
