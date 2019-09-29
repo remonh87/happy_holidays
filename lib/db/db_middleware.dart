@@ -4,7 +4,7 @@ import 'package:happy_holidays/redux/app_state.dart';
 import 'package:redux/redux.dart';
 
 Middleware<AppState> dbMiddleware(HolidayDatabase db) => (Store<AppState> store, dynamic action, NextDispatcher next) {
-      executeAction(db, action);
+      executeAction(action, db);
       next(action);
     };
 

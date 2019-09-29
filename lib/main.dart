@@ -13,12 +13,12 @@ import 'package:redux/redux.dart';
 import 'db/db_middleware.dart';
 
 Future<void> main() async {
-  const apiclient = HolidayApiClient(holidayApi: HolidayApi());
+  final apiclient = HolidayApiClient(holidayApi: NagerHolidayApi());
   final database = await HolidayDatabaseFactory().createDatabase();
   final store = Store<AppState>(
     holidayReducer,
     initialState: const AppState(nationalHolidays: []),
-    middleware: [const AppMiddleware(apiClient: apiclient), dbMiddleware(HolidayDatabase(database))],
+    middleware: [AppMiddleware(apiClient: apiclient), dbMiddleware(HolidayDatabase(database))],
   );
 
   store.dispatch(StartAppAction());

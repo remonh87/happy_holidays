@@ -1,10 +1,14 @@
 import 'package:http/http.dart' as http;
 
-class HolidayApi {
-  const HolidayApi();
+abstract class HolidayApi {
+  Future<http.Response> nextPublicHolidaysWorldwide();
+}
+
+class NagerHolidayApi extends HolidayApi {
+  NagerHolidayApi() : super();
 
   static const String _baseUrl = 'https://date.nager.at/api/v2';
 
-  Future<http.Response> nextPublicHolidaysWorldwide() async =>
-      http.get('$_baseUrl/NextPublicHolidaysWorldwide');
+  @override
+  Future<http.Response> nextPublicHolidaysWorldwide() async => http.get('$_baseUrl/NextPublicHolidaysWorldwide');
 }
