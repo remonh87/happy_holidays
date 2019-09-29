@@ -25,21 +25,17 @@ Future<void> main() async {
 
   runApp(HolidayApp(
     store: store,
-    apiClient: apiclient,
   ));
 }
 
 class HolidayApp extends StatelessWidget {
   const HolidayApp({
     @required this.store,
-    @required this.apiClient,
     Key key,
   })  : assert(store != null),
-        assert(apiClient != null),
         super(key: key);
 
   final Store<AppState> store;
-  final HolidayApiClient apiClient;
 
   @override
   Widget build(BuildContext context) => StoreProvider<AppState>(
@@ -49,9 +45,8 @@ class HolidayApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: HomePage(
+          home: const HomePage(
             title: 'National holiday',
-            client: apiClient,
           ),
         ),
       );

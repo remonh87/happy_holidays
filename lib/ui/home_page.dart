@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:happy_holidays/api/holiday_api_client.dart';
 import 'package:happy_holidays/model/national_holiday.dart';
 import 'package:happy_holidays/redux/app_state.dart';
 import 'package:redux/redux.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key key, @required this.title, @required this.client}) : super(key: key);
+  const HomePage({Key key, @required this.title}) : super(key: key);
   final String title;
-  final HolidayApiClient client;
 
   @override
   Widget build(BuildContext context) {
