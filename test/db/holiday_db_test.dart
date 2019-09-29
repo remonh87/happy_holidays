@@ -9,17 +9,18 @@ class MockDb extends Mock implements Database {}
 void main() {
   group('$HolidayDatabase', () {
     Database db;
-    HolidayDatabase holidayDatabase;
+    HolidayDatabase sut;
     setUp(() {
       db = MockDb();
-      holidayDatabase = HolidayDatabase(db);
-      when(db.insert(any, any)).thenAnswer((_) => Future.value(0));
+      sut = HolidayDatabase(db);
     });
 
     test('It inserts holidays', () async {
+      when(db.insert(any, any)).thenAnswer((_) => Future.value(0));
+
       const holiday1 = NationalHoliday(name: 'test', date: '2020-01-01');
       final holiday2 = NationalHoliday.testinstance();
-      await holidayDatabase.addHolidays([holiday1, holiday2]);
+      await sut.addHolidays([holiday1, holiday2]);
 
       verify(db.insert('holidays', <String, dynamic>{'name': holiday1.name, 'date': holiday1.date},
               conflictAlgorithm: ConflictAlgorithm.replace))
@@ -28,6 +29,14 @@ void main() {
       verify(db.insert('holidays', <String, dynamic>{'name': holiday2.name, 'date': holiday2.date},
               conflictAlgorithm: ConflictAlgorithm.replace))
           .called(1);
+    });
+
+    test('It queries for holidays', () async {
+      when(db.query('holidays')).thenAnswer((_) => Future.value([
+            <String, String>{'name': 'holiday from db', 'date': '2020-01-01'}
+          ]));
+
+      expect(await sut.retrieveHolidays(), [const NationalHoliday(name: 'holiday from db', date: '2020-01-01')]);
     });
   });
 }
