@@ -5,11 +5,9 @@ import 'package:happy_holidays/model/national_holiday.dart';
 import 'package:happy_holidays/redux/actions.dart';
 import 'package:mockito/mockito.dart';
 
-class _MockDatabase extends Mock implements HolidayDatabase {}
+import '../utils/stubs.dart';
 
-abstract class Dispatcher {
-  void dispatch(dynamic action);
-}
+class _MockDatabase extends Mock implements HolidayDatabase {}
 
 class _MockDispatcher extends Mock implements Dispatcher {}
 
@@ -31,11 +29,11 @@ void main() {
       verify(db.addHolidays(action.holidays)).called(1);
     });
 
-    group('Given $StartAppAction is dispatched', () {
+    group('Given $DbRetrieveHolidaysAction is dispatched', () {
       const holiday = NationalHoliday(name: 'test', date: '2020-01-01');
       setUp(() async {
         when(db.retrieveHolidays()).thenAnswer((_) => Future.value([holiday]));
-        final action = StartAppAction();
+        final action = DbRetrieveHolidaysAction();
         await sut(action);
       });
 
@@ -43,8 +41,8 @@ void main() {
         verify(db.retrieveHolidays()).called(1);
       });
 
-      test('It dispatches $AddHolidaysAction when db contains results', () {
-        verify(dispatcher.dispatch(const AddHolidaysAction(holidays: [holiday]))).called(1);
+      test('It dispatches $DbHolidaysRetrievedAction when db contains results', () {
+        verify(dispatcher.dispatch(const DbHolidaysRetrievedAction(holidays: [holiday]))).called(1);
       });
     });
   });

@@ -11,8 +11,8 @@ Middleware<AppState> dbMiddleware(HolidayDatabase db) => (Store<AppState> store,
 Future<void> executeAction(dynamic action, HolidayDatabase db, void Function(dynamic action) dispatch) async {
   if (action is DbInsertHolidaysAction) {
     await db.addHolidays(action.holidays);
-  } else if (action is StartAppAction) {
+  } else if (action is DbRetrieveHolidaysAction) {
     final result = await db.retrieveHolidays();
-    dispatch(AddHolidaysAction(holidays: result));
+    dispatch(DbHolidaysRetrievedAction(holidays: result));
   }
 }
