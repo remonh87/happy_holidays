@@ -14,6 +14,8 @@ import 'package:redux/redux.dart';
 import 'db/db_middleware.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   final apiclient = HolidayApiClient(holidayApi: NagerHolidayApi());
   final database = await HolidayDatabaseFactory().createDatabase();
   final store = Store<AppState>(
