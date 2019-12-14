@@ -41,7 +41,7 @@ void main() {
       });
 
       test('It dispatches $ApiFetchHolidaysSuccessAction', () {
-        verify(store.dispatch(ApiFetchHolidaysSuccessAction(holidays: holidays))).called(1);
+        verify<void>(store.dispatch(ApiFetchHolidaysSuccessAction(holidays: holidays))).called(1);
       });
     });
   });
