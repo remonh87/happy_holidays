@@ -22,7 +22,8 @@ void main() {
       final action = StartAppAction();
       test('It dispatches $DbRetrieveHolidaysAction', () async {
         await sut(action);
-        verify(dispatcher.dispatch(isInstanceOf<DbRetrieveHolidaysAction>())).called(1);
+        verify(dispatcher.dispatch(isInstanceOf<DbRetrieveHolidaysAction>()))
+            .called(1);
       });
     });
 
@@ -33,7 +34,8 @@ void main() {
 
         test('It dispatch $AddHolidaysAction', () async {
           await sut(action);
-          verify(dispatcher.dispatch(AddHolidaysAction(holidays: [holiday]))).called(1);
+          verify(dispatcher.dispatch(AddHolidaysAction(holidays: [holiday])))
+              .called(1);
         });
       });
 
@@ -41,7 +43,8 @@ void main() {
         const action = DbHolidaysRetrievedAction(holidays: []);
         test('It dispatch $ApiFetchHolidaysAction', () async {
           await sut(action);
-          verify(dispatcher.dispatch(isInstanceOf<ApiFetchHolidaysAction>())).called(1);
+          verify(dispatcher.dispatch(isInstanceOf<ApiFetchHolidaysAction>()))
+              .called(1);
         });
       });
     });
@@ -52,12 +55,14 @@ void main() {
 
       test('It dispatches $DbInsertHolidaysAction', () async {
         await sut(action);
-        verify(dispatcher.dispatch(DbInsertHolidaysAction(holidays: [holiday]))).called(1);
+        verify(dispatcher.dispatch(DbInsertHolidaysAction(holidays: [holiday])))
+            .called(1);
       });
 
       test('It dispatches $DbRetrieveHolidaysAction()', () async {
         await sut(action);
-        verify(dispatcher.dispatch(isInstanceOf<DbRetrieveHolidaysAction>())).called(1);
+        verify(dispatcher.dispatch(isInstanceOf<DbRetrieveHolidaysAction>()))
+            .called(1);
       });
     });
   });

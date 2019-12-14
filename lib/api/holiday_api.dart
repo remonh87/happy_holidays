@@ -10,5 +10,6 @@ class NagerHolidayApi extends HolidayApi {
   static const String _baseUrl = 'https://date.nager.at/api/v2';
 
   @override
-  Future<http.Response> nextPublicHolidaysWorldwide() async => http.get('$_baseUrl/NextPublicHolidaysWorldwide');
+  Future<http.Response> nextPublicHolidaysWorldwide() async =>
+      http.get('$_baseUrl/NextPublicHolidaysWorldwide');
 }

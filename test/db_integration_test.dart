@@ -28,18 +28,23 @@ void main() {
     group('GIVEN db contains holidays', () {
       setUp(() {
         api = MockApi();
-        when(api.nextPublicHolidaysWorldwide()).thenAnswer((_) => Future.value(Response('[{}]', 200)));
+        when(api.nextPublicHolidaysWorldwide())
+            .thenAnswer((_) => Future.value(Response('[{}]', 200)));
         db = MockDb();
         when(db.insert(any, any)).thenAnswer((_) => Future.value(1));
         when(db.query('holidays')).thenAnswer(
           (_) => Future.value([
-            <String, String>{'name': 'holiday from db', 'date': '2019-09-29T11:10:01.011Z'},
+            <String, String>{
+              'name': 'holiday from db',
+              'date': '2019-09-29T11:10:01.011Z'
+            },
           ]),
         );
         sut = createSut(api, db);
       });
 
-      testWidgets('Fetches holiday from db an display it on the screen', (WidgetTester tester) async {
+      testWidgets('Fetches holiday from db an display it on the screen',
+          (WidgetTester tester) async {
         await tester.pumpWidget(sut);
         await tester.pump(const Duration(seconds: 4));
 
@@ -49,12 +54,15 @@ void main() {
     });
     group('Given api call returns holiday', () {
       setUp(() {
-        const jsonBody = '[{"date": "2019-09-29T11:10:01.011Z", "localName": "testlocal", "name": "test"}]';
+        const jsonBody =
+            '[{"date": "2019-09-29T11:10:01.011Z", "localName": "testlocal", "name": "test"}]';
         api = MockApi();
-        when(api.nextPublicHolidaysWorldwide()).thenAnswer((_) => Future.value(Response(jsonBody, 200)));
+        when(api.nextPublicHolidaysWorldwide())
+            .thenAnswer((_) => Future.value(Response(jsonBody, 200)));
         db = MockDb();
         when(db.insert(any, any)).thenAnswer((_) => Future.value(1));
-        when(db.query('holidays')).thenAnswer((_) => Future.value([<String, dynamic>{}]));
+        when(db.query('holidays'))
+            .thenAnswer((_) => Future.value([<String, dynamic>{}]));
         sut = createSut(api, db);
       });
 
@@ -62,8 +70,14 @@ void main() {
         await tester.pumpWidget(sut);
 
         verify(
-          db.insert('holidays', <String, String>{'name': 'test', 'date': '2019-09-29T11:10:01.011Z'},
-              nullColumnHack: anyNamed('nullColumnHack'), conflictAlgorithm: ConflictAlgorithm.replace),
+          db.insert(
+              'holidays',
+              <String, String>{
+                'name': 'test',
+                'date': '2019-09-29T11:10:01.011Z'
+              },
+              nullColumnHack: anyNamed('nullColumnHack'),
+              conflictAlgorithm: ConflictAlgorithm.replace),
         ).called(1);
       });
     });

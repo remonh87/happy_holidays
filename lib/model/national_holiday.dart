@@ -12,10 +12,12 @@ class NationalHoliday extends $NationalHoliday {
       : assert(name != null),
         assert(date != null);
 
-  factory NationalHoliday.fromJson(Map<String, dynamic> json) => _$NationalHolidayFromJson(json);
+  factory NationalHoliday.fromJson(Map<String, dynamic> json) =>
+      _$NationalHolidayFromJson(json);
 
   @visibleForTesting
-  factory NationalHoliday.testinstance() => const NationalHoliday(name: 'test', date: '2019-01-01');
+  factory NationalHoliday.testinstance() =>
+      const NationalHoliday(name: 'test', date: '2019-01-01');
 
   final String name;
   final String date;

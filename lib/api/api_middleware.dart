@@ -5,7 +5,8 @@ import 'package:happy_holidays/redux/app_state.dart';
 import 'package:redux/redux.dart';
 
 class ApiMiddleware implements MiddlewareClass<AppState> {
-  const ApiMiddleware({@required HolidayApiClient apiClient}) : _apiClient = apiClient;
+  const ApiMiddleware({@required HolidayApiClient apiClient})
+      : _apiClient = apiClient;
 
   final HolidayApiClient _apiClient;
 
