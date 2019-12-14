@@ -23,7 +23,11 @@ Future<void> main() async {
   final store = Store<AppState>(
     holidayReducer,
     initialState: const AppState(nationalHolidays: []),
-    middleware: [ApiMiddleware(apiClient: apiclient), dbMiddleware(HolidayDatabase(database)), appMiddleWare()],
+    middleware: [
+      ApiMiddleware(apiClient: apiclient),
+      dbMiddleware(HolidayDatabase(database)),
+      appMiddleWare()
+    ],
   );
 
   store.dispatch(StartAppAction());
@@ -45,21 +49,23 @@ class HolidayApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
-          _providerFromStore<Iterable<NationalHoliday>>((state) => state.nationalHolidays),
+          _providerFromStore<Iterable<NationalHoliday>>(
+              (state) => state.nationalHolidays),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const HomePage(
-            title: 'National holiday',
-          ),
+          home: const HomePage(),
         ),
       );
 
-  StreamProvider<T> _providerFromStore<T>(T Function(AppState) convert) => StreamProvider<T>(
-        create: (_) => store.onChange.map(convert).distinct(const DeepCollectionEquality().equals),
+  StreamProvider<T> _providerFromStore<T>(T Function(AppState) convert) =>
+      StreamProvider<T>(
+        create: (_) => store.onChange
+            .map(convert)
+            .distinct(const DeepCollectionEquality().equals),
         initialData: convert(store.state),
       );
 }

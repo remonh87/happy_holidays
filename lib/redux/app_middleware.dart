@@ -3,12 +3,14 @@ import 'package:redux/redux.dart';
 
 import 'app_state.dart';
 
-Middleware<AppState> appMiddleWare() => (Store<AppState> store, dynamic action, NextDispatcher next) {
+Middleware<AppState> appMiddleWare() =>
+    (Store<AppState> store, dynamic action, NextDispatcher next) {
       executeAction(action, store.dispatch);
       next(action);
     };
 
-Future<void> executeAction(dynamic action, void Function(dynamic action) dispatch) async {
+Future<void> executeAction(
+    dynamic action, void Function(dynamic action) dispatch) async {
   if (action is StartAppAction) {
     dispatch(DbRetrieveHolidaysAction());
   } else if (action is DbHolidaysRetrievedAction) {

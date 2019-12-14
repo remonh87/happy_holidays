@@ -13,6 +13,7 @@ dependencies:
   collection:
   cupertino_icons:
   functional_data:
+  google_fonts:
   http:
   json_annotation:
   provider:
