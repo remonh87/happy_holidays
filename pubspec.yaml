@@ -10,11 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.2
-  flutter_redux:
+  collection:
+  cupertino_icons:
   functional_data:
   http:
   json_annotation:
+  provider:
   redux:
   sqflite:
   path:
