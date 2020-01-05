@@ -9,7 +9,7 @@ void main() {
     test('It displays the holidays from appstate', () {
       final sut = HomePageViewModel.fromState([holiday]);
 
-      expect(sut.holidays, [holiday]);
+      expect(sut.holiday, holiday);
     });
   });
 }
