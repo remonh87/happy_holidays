@@ -19,7 +19,8 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.orange[200],
       body: Selector<Iterable<NationalHoliday>, HomePageViewModel>(
           selector: (_, holidays) => HomePageViewModel.fromState(holidays),
-          builder: (context, viewModel, __) => HomepageScreen(viewModel: viewModel)),
+          builder: (context, viewModel, __) =>
+              HomepageScreen(viewModel: viewModel)),
     );
   }
 }
@@ -34,13 +35,15 @@ class HomepageScreen extends StatefulWidget {
   _HomepageScreenState createState() => _HomepageScreenState();
 }
 
-class _HomepageScreenState extends State<HomepageScreen> with SingleTickerProviderStateMixin {
+class _HomepageScreenState extends State<HomepageScreen>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: const Duration(seconds: 2), vsync: this);
+    _controller =
+        AnimationController(duration: const Duration(seconds: 2), vsync: this);
 
     _controller.forward();
   }
@@ -123,7 +126,8 @@ class AnimatedHolidayPage extends StatelessWidget {
 class HomePageViewModel extends $HomePageViewModel {
   const HomePageViewModel({@required this.holiday});
 
-  HomePageViewModel.fromState(Iterable<NationalHoliday> holidays) : this(holiday: holidays.first);
+  HomePageViewModel.fromState(Iterable<NationalHoliday> holidays)
+      : this(holiday: holidays.first);
 
   @CustomEquality(DeepCollectionEquality.unordered())
   final NationalHoliday holiday;
@@ -147,7 +151,8 @@ class _StaggeredHolidayAnimation {
             curve: const Interval(0.34, 0.66, curve: Curves.ease),
           ),
         ),
-        offsetFlagAnimation = Tween(begin: const Offset(-4.0, 0.0), end: Offset.zero).animate(
+        offsetFlagAnimation =
+            Tween(begin: const Offset(-4.0, 0.0), end: Offset.zero).animate(
           CurvedAnimation(
             parent: controller,
             curve: const Interval(0.67, 1.0, curve: Curves.ease),
