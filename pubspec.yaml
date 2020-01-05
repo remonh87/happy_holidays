@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cached_network_image:
   collection:
   cupertino_icons:
   functional_data:
@@ -32,3 +33,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/globe.webp
