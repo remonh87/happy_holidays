@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:functional_data/functional_data.dart';
@@ -17,8 +18,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.orange[200],
       body: Selector<Iterable<NationalHoliday>, HomePageViewModel>(
           selector: (_, holidays) => HomePageViewModel.fromState(holidays),
-          builder: (context, viewModel, __) =>
-              HomepageScreen(viewModel: viewModel)),
+          builder: (context, viewModel, __) => HomepageScreen(viewModel: viewModel)),
     );
   }
 }
@@ -39,7 +39,7 @@ class HomepageScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Text(
-                '${viewModel.holidays.first.date}',
+                '${viewModel.holiday.date}',
                 style: GoogleFonts.kavoon(fontSize: 34.0),
               ),
             ),
@@ -49,28 +49,23 @@ class HomepageScreen extends StatelessWidget {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: NetworkImage(
-                      'https://github.com/remonh87/country-flags/blob/master/png250px/za.png?raw=true',
-                    ),
+                  boxShadow: [BoxShadow(color: Colors.grey[900], blurRadius: 5.0, spreadRadius: 2.0)],
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                child: const ClipOval(
+                  child: FadeInImage(
+                    placeholder: AssetImage('assets/globe.webp'),
+                    image: CachedNetworkImageProvider(
+                        'https://github.com/remonh87/country-flags/blob/master/png250px/za.png?raw=true'),
                     fit: BoxFit.fill,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey[900],
-                        blurRadius: 5.0,
-                        spreadRadius: 2.0)
-                  ],
-                  borderRadius: BorderRadius.circular(50.0),
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: Text(
-                viewModel.holidays.isNotEmpty
-                    ? viewModel.holidays.first.name
-                    : 'Retrieving holidays',
+                viewModel.holiday?.name ?? 'Retrieving holidays',
                 style: GoogleFonts.kavoon(fontSize: 24.0),
               ),
             ),
@@ -84,13 +79,12 @@ class HomepageScreen extends StatelessWidget {
 @visibleForTesting
 @FunctionalData()
 class HomePageViewModel extends $HomePageViewModel {
-  const HomePageViewModel({@required this.holidays});
+  const HomePageViewModel({@required this.holiday});
 
-  HomePageViewModel.fromState(Iterable<NationalHoliday> holidays)
-      : this(holidays: holidays);
+  HomePageViewModel.fromState(Iterable<NationalHoliday> holidays) : this(holiday: holidays.first);
 
   @CustomEquality(DeepCollectionEquality.unordered())
-  final Iterable<NationalHoliday> holidays;
+  final NationalHoliday holiday;
 }
 
 // #6d80d5   #1d49c2  #1641b8 #002da1
