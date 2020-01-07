@@ -19,20 +19,16 @@ void main() {
       test('It inserts holidays', () async {
         when(db.insert(any, any)).thenAnswer((_) => Future.value(0));
 
-        final holiday1 =
-            NationalHoliday(name: 'test', date: DateTime(2020, 1, 1));
+        final holiday1 = NationalHoliday(name: 'test', date: DateTime(2020, 1, 1));
         final holiday2 = NationalHoliday.testinstance();
         await sut.addHolidays([holiday1, holiday2]);
 
-        verify(db.insert('holidays',
-                <String, dynamic>{'name': holiday1.name, 'date': 1577833200000},
+        verify(db.insert('holidays', <String, dynamic>{'name': holiday1.name, 'dateEpoch': 1577833200000},
                 conflictAlgorithm: ConflictAlgorithm.replace))
             .called(1);
 
-        verify(db.insert('holidays',
-                <String, dynamic>{'name': holiday2.name, 'date': 1546297200000},
-                nullColumnHack: null,
-                conflictAlgorithm: ConflictAlgorithm.replace))
+        verify(db.insert('holidays', <String, dynamic>{'name': holiday2.name, 'dateEpoch': 1546297200000},
+                nullColumnHack: null, conflictAlgorithm: ConflictAlgorithm.replace))
             .called(1);
       });
     });
@@ -40,27 +36,18 @@ void main() {
     group('Query database', () {
       test('It converts contents to holidays in case db has value', () async {
         when(db.query('holidays')).thenAnswer((_) => Future.value([
-              <String, Object>{
-                'name': 'holiday from db',
-                'date': 1577833200000
-              },
-              <String, Object>{
-                'name': 'holidaynot to be shown',
-                'date': 1546297200000
-              },
+              <String, Object>{'name': 'holiday from db', 'dateEpoch': 1577833200000},
+              <String, Object>{'name': 'holidaynot to be shown', 'dateEpoch': 1546297200000},
             ]));
 
-        expect(await sut.retrieveHolidays(DateTime(2019, 12, 31)), [
-          NationalHoliday(name: 'holiday from db', date: DateTime(2020, 1, 1))
-        ]);
+        expect(await sut.retrieveHolidays(DateTime(2019, 12, 31)),
+            [NationalHoliday(name: 'holiday from db', date: DateTime(2020, 1, 1))]);
       });
 
       test('It returns empty iterable in case db is empty', () async {
-        when(db.query('holidays'))
-            .thenAnswer((_) => Future.value([<String, String>{}]));
+        when(db.query('holidays')).thenAnswer((_) => Future.value([<String, String>{}]));
 
-        expect(await sut.retrieveHolidays(DateTime(2019, 12, 31)),
-            <NationalHoliday>[]);
+        expect(await sut.retrieveHolidays(DateTime(2019, 12, 31)), <NationalHoliday>[]);
       });
     });
   });
