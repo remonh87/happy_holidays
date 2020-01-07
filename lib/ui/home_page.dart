@@ -4,6 +4,7 @@ import 'package:functional_data/functional_data.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_holidays/model/national_holiday.dart';
 import 'package:provider/provider.dart';
+import 'package:happy_holidays/utils/date_time_extensions.dart';
 
 import 'flag_rounded_image.dart';
 
@@ -86,7 +87,7 @@ class AnimatedHolidayPage extends StatelessWidget {
               child: Opacity(
                 opacity: animation.opacityDateAnimation.value,
                 child: Text(
-                  '${holiday.date.day} - ${holiday.date.month} - ${holiday.date.year}',
+                  holiday.date.simpleDateTimeEuropean(),
                   style: GoogleFonts.kavoon(fontSize: 34.0),
                 ),
               ),

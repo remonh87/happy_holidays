@@ -4,7 +4,7 @@ import 'package:happy_holidays/redux/actions.dart';
 import 'package:happy_holidays/redux/app_middleware.dart';
 import 'package:mockito/mockito.dart';
 
-import '../utils/stubs.dart';
+import '../test_utils/stubs.dart';
 
 class _MockDispatcher extends Mock implements Dispatcher {}
 

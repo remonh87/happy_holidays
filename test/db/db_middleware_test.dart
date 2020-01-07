@@ -5,7 +5,7 @@ import 'package:happy_holidays/model/national_holiday.dart';
 import 'package:happy_holidays/redux/actions.dart';
 import 'package:mockito/mockito.dart';
 
-import '../utils/stubs.dart';
+import '../test_utils/stubs.dart';
 
 class _MockDatabase extends Mock implements HolidayDatabase {}
 
