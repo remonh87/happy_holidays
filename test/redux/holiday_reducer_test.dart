@@ -10,20 +10,26 @@ void main() {
     Store<AppState> store;
 
     setUp(() {
-      store = Store<AppState>(holidayReducer, initialState: const AppState(nationalHolidays: <NationalHoliday>[]));
+      store = Store<AppState>(holidayReducer,
+          initialState: const AppState(nationalHolidays: <NationalHoliday>[]));
     });
 
-    test('It adds holidays to appstate when  $AddHolidaysAction is dispatched', () {
-      final action = AddHolidaysAction(holidays: [NationalHoliday(name: 'Test holiday', date: DateTime(2020, 1, 1))]);
+    test('It adds holidays to appstate when  $AddHolidaysAction is dispatched',
+        () {
+      final action = AddHolidaysAction(holidays: [
+        NationalHoliday(name: 'Test holiday', date: DateTime(2020, 1, 1))
+      ]);
 
       store.dispatch(action);
-      expect(store.state.nationalHolidays, [NationalHoliday(name: 'Test holiday', date: DateTime(2020, 1, 1))]);
+      expect(store.state.nationalHolidays,
+          [NationalHoliday(name: 'Test holiday', date: DateTime(2020, 1, 1))]);
     });
 
     test('It does not change state in case action is $StartAppAction', () {
       store.dispatch(StartAppAction());
 
-      expect(store.state, const AppState(nationalHolidays: <NationalHoliday>[]));
+      expect(
+          store.state, const AppState(nationalHolidays: <NationalHoliday>[]));
     });
   });
 }

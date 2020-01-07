@@ -86,7 +86,7 @@ class AnimatedHolidayPage extends StatelessWidget {
               child: Opacity(
                 opacity: animation.opacityDateAnimation.value,
                 child: Text(
-                  '${holiday.date}',
+                  '${holiday.date.day} - ${holiday.date.month} - ${holiday.date.year}',
                   style: GoogleFonts.kavoon(fontSize: 34.0),
                 ),
               ),

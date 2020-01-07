@@ -14,7 +14,8 @@ Future<void> executeAction(dynamic action, HolidayDatabase db,
   if (action is DbInsertHolidaysAction) {
     await db.addHolidays(action.holidays);
   } else if (action is DbRetrieveHolidaysAction) {
-    final result = await db.retrieveHolidays();
+    final result = await db
+        .retrieveHolidays(DateTime.now().subtract(const Duration(days: 1)));
     dispatch(DbHolidaysRetrievedAction(holidays: result));
   }
 }
