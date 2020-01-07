@@ -15,38 +15,35 @@ void main() {
       sut = HolidayDatabase(db);
     });
 
-    test('It inserts holidays', () async {
-      when(db.insert(any, any)).thenAnswer((_) => Future.value(0));
+    group('Insert into db', () {
+      test('It inserts holidays', () async {
+        when(db.insert(any, any)).thenAnswer((_) => Future.value(0));
 
-      const holiday1 = NationalHoliday(name: 'test', date: '2020-01-01');
-      final holiday2 = NationalHoliday.testinstance();
-      await sut.addHolidays([holiday1, holiday2]);
+        final holiday1 = NationalHoliday(name: 'test', date: DateTime(2020, 1, 1));
+        final holiday2 = NationalHoliday.testinstance();
+        await sut.addHolidays([holiday1, holiday2]);
 
-      verify(db.insert('holidays',
-              <String, dynamic>{'name': holiday1.name, 'date': holiday1.date},
-              conflictAlgorithm: ConflictAlgorithm.replace))
-          .called(1);
+        verify(db.insert('holidays', <String, dynamic>{'name': holiday1.name, 'date': 1577833200000},
+                conflictAlgorithm: ConflictAlgorithm.replace))
+            .called(1);
 
-      verify(db.insert('holidays',
-              <String, dynamic>{'name': holiday2.name, 'date': holiday2.date},
-              conflictAlgorithm: ConflictAlgorithm.replace))
-          .called(1);
+        verify(db.insert('holidays', <String, dynamic>{'name': holiday2.name, 'date': 1546297200000},
+                nullColumnHack: null, conflictAlgorithm: ConflictAlgorithm.replace))
+            .called(1);
+      });
     });
 
     group('Query database', () {
       test('It converts contents to holidays in case db has value', () async {
         when(db.query('holidays')).thenAnswer((_) => Future.value([
-              <String, String>{'name': 'holiday from db', 'date': '2020-01-01'}
+              <String, Object>{'name': 'holiday from db', 'date': 1577833200000}
             ]));
 
-        expect(await sut.retrieveHolidays(), [
-          const NationalHoliday(name: 'holiday from db', date: '2020-01-01')
-        ]);
+        expect(await sut.retrieveHolidays(), [NationalHoliday(name: 'holiday from db', date: DateTime(2020, 1, 1))]);
       });
 
       test('It returns empty iterable in case db is empty', () async {
-        when(db.query('holidays'))
-            .thenAnswer((_) => Future.value([<String, String>{}]));
+        when(db.query('holidays')).thenAnswer((_) => Future.value([<String, String>{}]));
 
         expect(await sut.retrieveHolidays(), <NationalHoliday>[]);
       });

@@ -10,15 +10,18 @@ class HolidayDatabase {
 
   Future<void> addHolidays(Iterable<NationalHoliday> holidays) async {
     for (final holiday in holidays) {
-      _database.insert('holidays', holiday.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
+      final holidayMap = {'name': holiday.name, 'date': holiday.date.millisecondsSinceEpoch};
+      _database.insert('holidays', holidayMap, conflictAlgorithm: ConflictAlgorithm.replace);
     }
   }
 
   Future<Iterable<NationalHoliday>> retrieveHolidays() async {
     final result = await _database.query('holidays');
     if (result.isNotEmpty && result.first.isNotEmpty) {
-      return result.map((r) => NationalHoliday.fromJson(r));
+      return result.map((r) => NationalHoliday(
+            name: r['name'],
+            date: DateTime.fromMillisecondsSinceEpoch(r['date']),
+          ));
     } else {
       return <NationalHoliday>[];
     }
@@ -27,9 +30,7 @@ class HolidayDatabase {
 
 class HolidayDatabaseFactory {
   Future<Database> createDatabase() async =>
-      await openDatabase(join(await getDatabasesPath(), 'holiday_database.db'),
-          onCreate: (db, version) {
-        db.execute(
-            'CREATE TABLE holidays (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT)');
+      await openDatabase(join(await getDatabasesPath(), 'holiday_database.db'), onCreate: (db, version) {
+        db.execute('CREATE TABLE holidays (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, dateEpoch INTEGER)');
       }, version: 1);
 }

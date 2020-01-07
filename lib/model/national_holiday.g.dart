@@ -8,9 +8,9 @@ part of 'national_holiday.dart';
 
 abstract class $NationalHoliday {
   String get name;
-  String get date;
+  DateTime get date;
   const $NationalHoliday();
-  NationalHoliday copyWith({String name, String date}) =>
+  NationalHoliday copyWith({String name, DateTime date}) =>
       NationalHoliday(name: name ?? this.name, date: date ?? this.date);
   String toString() => "NationalHoliday(name: $name, date: $date)";
   bool operator ==(dynamic other) =>
@@ -29,7 +29,7 @@ abstract class $NationalHoliday {
 class NationalHoliday$ {
   static final name = Lens<NationalHoliday, String>(
       (s_) => s_.name, (s_, name) => s_.copyWith(name: name));
-  static final date = Lens<NationalHoliday, String>(
+  static final date = Lens<NationalHoliday, DateTime>(
       (s_) => s_.date, (s_, date) => s_.copyWith(date: date));
 }
 
@@ -40,12 +40,12 @@ class NationalHoliday$ {
 NationalHoliday _$NationalHolidayFromJson(Map<String, dynamic> json) {
   return NationalHoliday(
     name: json['name'] as String,
-    date: json['date'] as String,
+    date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
   );
 }
 
 Map<String, dynamic> _$NationalHolidayToJson(NationalHoliday instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'date': instance.date,
+      'date': instance.date?.toIso8601String(),
     };
