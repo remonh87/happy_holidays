@@ -23,16 +23,14 @@ void main() {
       sut = (dynamic action) => executeAction(action, db, dispatcher.dispatch);
     });
 
-    test('It writes to database when $DbInsertHolidaysAction is dispatched',
-        () async {
-      final action =
-          DbInsertHolidaysAction(holidays: [NationalHoliday.testinstance()]);
+    test('It writes to database when $DbInsertHolidaysAction is dispatched', () async {
+      final action = DbInsertHolidaysAction(holidays: [NationalHoliday.testinstance()]);
       await sut(action);
       verify(db.addHolidays(action.holidays)).called(1);
     });
 
     group('Given $DbRetrieveHolidaysAction is dispatched', () {
-      const holiday = NationalHoliday(name: 'test', date: '2020-01-01');
+      final holiday = NationalHoliday(name: 'test', date: DateTime(2020, 1, 1));
       setUp(() async {
         when(db.retrieveHolidays()).thenAnswer((_) => Future.value([holiday]));
         final action = DbRetrieveHolidaysAction();
@@ -43,10 +41,8 @@ void main() {
         verify(db.retrieveHolidays()).called(1);
       });
 
-      test('It dispatches $DbHolidaysRetrievedAction when db contains results',
-          () {
-        verify(dispatcher.dispatch(
-            const DbHolidaysRetrievedAction(holidays: [holiday]))).called(1);
+      test('It dispatches $DbHolidaysRetrievedAction when db contains results', () {
+        verify(dispatcher.dispatch(DbHolidaysRetrievedAction(holidays: [holiday]))).called(1);
       });
     });
   });
